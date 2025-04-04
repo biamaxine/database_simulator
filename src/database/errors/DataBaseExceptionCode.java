@@ -3,7 +3,7 @@ package database.errors;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum DataBaseErrorCode {
+public enum DataBaseExceptionCode {
   // Classe 08 - Conexão
   CONNECTION_FAILURE("08.001", "Connection Failure"),
 
@@ -26,15 +26,15 @@ public enum DataBaseErrorCode {
   private final String code;
   private final String name;
 
-  private static final Map<String, DataBaseErrorCode> LOOKUP_MAP = new HashMap<>();
+  private static final Map<String, DataBaseExceptionCode> LOOKUP_MAP = new HashMap<>();
 
   static {
-    for (DataBaseErrorCode dbError : values()) {
+    for (DataBaseExceptionCode dbError : values()) {
       LOOKUP_MAP.put(dbError.code, dbError);
     }
   }
 
-  private DataBaseErrorCode(String code, String name) {
+  private DataBaseExceptionCode(String code, String name) {
     this.code = code;
     this.name = name;
   }
@@ -47,7 +47,7 @@ public enum DataBaseErrorCode {
     return name;
   }
 
-  public static DataBaseErrorCode fromCode(String code) {
+  public static DataBaseExceptionCode fromCode(String code) {
     return LOOKUP_MAP.getOrDefault(code, UNKNOWN_ERROR);
   }
 

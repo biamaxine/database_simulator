@@ -4,8 +4,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import database.errors.UnableDefineDocumentError;
-import database.errors.UniqueViolationError;
+import database.errors.UnableDefineDocumentException;
+import database.errors.UniqueViolationException;
 
 class Property {
   Class<?> type;
@@ -76,7 +76,7 @@ public interface DataBaseItem {
       k -> new Property()
     );
 
-    if (prop.getter != null) throw new UniqueViolationError(
+    if (prop.getter != null) throw new UniqueViolationException(
       "The method '" + prop.getter.getName() +
       "' is already defined as GETTER for property '" +
       annotation.propertyName() + "'."
@@ -99,7 +99,7 @@ public interface DataBaseItem {
       annotation.propertyName(),
       k -> new Property()
     );
-    if (prop.setter != null) throw new UniqueViolationError(
+    if (prop.setter != null) throw new UniqueViolationException(
       "The method '" + prop.setter.getName() +
       "' is already defined as SETTER for property '" +
       annotation.propertyName() + "'."
@@ -115,7 +115,7 @@ public interface DataBaseItem {
 
   private void validateGetter(Method method) {
     if (method.getParameterCount() != 0)
-      throw new UnableDefineDocumentError(
+      throw new UnableDefineDocumentException(
         "Invalid GETTER method '" + method.getName() +
         "'. GETTER methods should not receive parameters."
       );
@@ -123,7 +123,7 @@ public interface DataBaseItem {
 
   private void validateSetter(Method method) {
     if (method.getParameterCount() != 1)
-      throw new UnableDefineDocumentError(
+      throw new UnableDefineDocumentException(
         "Invalid SETTER method '" + method.getName() +
         "'. SETTER methods must only receive one parameter."
       );
@@ -135,7 +135,7 @@ public interface DataBaseItem {
     Method oppositeMethod
   ) {
     if (prop.type != null && prop.type != newType)
-      throw new UnableDefineDocumentError(
+      throw new UnableDefineDocumentException(
         "The type of property is already set to '" + prop.type + "' by the '" +
         (oppositeMethod != null ? oppositeMethod.getName() : "undefined") +
         "' method and cannot be redefined as '" + newType + "'."

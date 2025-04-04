@@ -2,7 +2,7 @@ package database;
 
 import java.lang.reflect.Method;
 
-import database.errors.UnableDefinePropertyError;
+import database.errors.UnableDefinePropertyException;
 
 public class DataBaseProperty {
   private final String name;
@@ -18,17 +18,17 @@ public class DataBaseProperty {
     Method setter
   ) {
     if (name == null)
-      throw new UnableDefinePropertyError(
+      throw new UnableDefinePropertyException(
         "A 'DataBaseProperty' must have a 'name' defined."
       );
 
     if (type == null)
-      throw new UnableDefinePropertyError(
+      throw new UnableDefinePropertyException(
         "A 'DataBaseProperty' must have a 'type' defined"
       );
 
     if (getter == null)
-      throw new UnableDefinePropertyError(
+      throw new UnableDefinePropertyException(
         "A 'DataBaseProperty' must have a GETTER method to ensure the data can be retrieved."
       );
 

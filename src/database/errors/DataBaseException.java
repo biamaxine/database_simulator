@@ -1,20 +1,20 @@
 package database.errors;
 
-public class DataBaseError extends RuntimeException {
-  private DataBaseErrorCode errorCode;
+public class DataBaseException extends RuntimeException {
+  private DataBaseExceptionCode errorCode;
 
-  public DataBaseError(DataBaseErrorCode errorCode) {
+  public DataBaseException(DataBaseExceptionCode errorCode) {
     super(errorCode.toString());
     this.errorCode = errorCode;
   }
 
-  public DataBaseError(DataBaseErrorCode errorCode, String message) {
+  public DataBaseException(DataBaseExceptionCode errorCode, String message) {
     super(errorCode.toString() + (message == null ? "" : ": " + message));
     this.errorCode = errorCode;
   }
 
-  public DataBaseError(
-    DataBaseErrorCode errorCode,
+  public DataBaseException(
+    DataBaseExceptionCode errorCode,
     String message,
     Exception e
   ) {
@@ -22,7 +22,7 @@ public class DataBaseError extends RuntimeException {
     this.errorCode = errorCode;
   }
 
-  public DataBaseErrorCode getErrorCode() {
+  public DataBaseExceptionCode getErrorCode() {
     return errorCode;
   }
 

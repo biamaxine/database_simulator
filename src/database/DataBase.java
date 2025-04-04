@@ -6,7 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
-import database.errors.UnableDefineCollectionError;
+import database.errors.UnableDefineCollectionException;
 
 public class DataBase<T extends DataBaseItem> {
   private final Class<T> type;
@@ -28,13 +28,13 @@ public class DataBase<T extends DataBaseItem> {
     T instance;
     try { instance = supplier.get(); }
     catch (Exception e) {
-      throw new UnableDefineCollectionError(
+      throw new UnableDefineCollectionException(
         "Unable to instantiate class '" + this.name + "' by supplier", e
       );
     }
 
     if (instance == null)
-      throw new UnableDefineCollectionError(
+      throw new UnableDefineCollectionException(
         "The supplier returned 'null' when trying to instantiate the '" +
         this.name + "' class."
       );
@@ -45,12 +45,12 @@ public class DataBase<T extends DataBaseItem> {
       instance.getProperties(false);
 
     if (uniqueProps == null)
-      throw new UnableDefineCollectionError(
+      throw new UnableDefineCollectionException(
         "Failed to get unique properties of instance of class '" + this.name +
         "'. The 'getProperties' method returned 'null'."
       );
     if (indexedProps == null)
-      throw new UnableDefineCollectionError(
+      throw new UnableDefineCollectionException(
         "Failed to get indexed properties of instance of class '" + this.name +
         "'. The 'getProperties' method returned 'null'."
       );

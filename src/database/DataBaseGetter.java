@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface DataBaseGetter {
   String propertyName();
-  boolean uniqueKey();
+  boolean isUnique();
 }

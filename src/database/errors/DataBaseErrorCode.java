@@ -18,6 +18,7 @@ public enum DataBaseErrorCode {
   SYNTAX_ERROR("42.000", "Syntax Error"),
 
   // Class XX - Personalizados
+  UNABLE_DEFINE_PROPERTY("XX.001", "Unable Define Property"),
   UNKNOWN_ERROR("XX.999", "Unknown Error");
 
   private final String code;

@@ -1,12 +1,16 @@
 package database;
 
+import java.lang.reflect.Method;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
+import database.errors.ErrorInAssignmentException;
 import database.errors.UnableDefineCollectionException;
+import database.errors.UniqueViolationException;
 
 public class DataBase<T extends DataBaseItem> {
   private final Class<T> type;
@@ -60,6 +64,82 @@ public class DataBase<T extends DataBaseItem> {
 
     for (String propName : indexedProps.keySet())
       this.indexed_properties.put(propName, new ConcurrentHashMap<>());
+  }
+
+  // CREATE
+  public UUID create(T item) {
+    this.validateUniqueProps(item);
+    UUID id = UUID.randomUUID();
+    storeUniqueProps(id, item);
+    storeIndexedProps(id, item);
+    this.data.put(id, item);
+    return id;
+  }
+
+  private void validateUniqueProps(T item) {
+    Map<String, DataBaseProperty> uniqueProps =
+      item.getProperties(true);
+    for (Map.Entry<String, DataBaseProperty> entry : uniqueProps.entrySet()) {
+      String propName = entry.getKey();
+      Method getter = entry.getValue().getGetter();
+
+      Object value;
+      try { value = getter.invoke(item); }
+      catch (Exception e) {
+        throw new ErrorInAssignmentException(
+          "Failed to invoke getter '" + getter.getName() +
+          "' on instance of class '" + item.getClass().getName() + "'.", e
+        );
+      }
+
+      if (this.unique_properties.get(propName).containsKey(value))
+        throw new UniqueViolationException(
+          "...message"
+        );
+    }
+  }
+
+  private void storeUniqueProps(UUID id, T item) {
+    Map<String, DataBaseProperty> uniqueProps =
+      item.getProperties(true);
+    for (Map.Entry<String, DataBaseProperty> entry : uniqueProps.entrySet()) {
+      String propName = entry.getKey();
+      Method getter = entry.getValue().getGetter();
+
+      Object value;
+      try { value = getter.invoke(item); }
+      catch (Exception e) {
+        throw new ErrorInAssignmentException(
+          "Failed to invoke getter '" + getter.getName() +
+          "' on instance of class '" + item.getClass().getName() + "'.", e
+        );
+      }
+
+      this.unique_properties.get(propName).put(value, id);
+    }
+  }
+
+  private void storeIndexedProps(UUID id, T item) {
+    Map<String, DataBaseProperty> indexedProps =
+      item.getProperties(false);
+    for (Map.Entry<String, DataBaseProperty> entry : indexedProps.entrySet()) {
+      String propName = entry.getKey();
+      Method getter = entry.getValue().getGetter();
+
+      Object value;
+      try { value = getter.invoke(item); }
+      catch (Exception e) {
+        throw new ErrorInAssignmentException(
+          "Failed to invoke getter '" + getter.getName() +
+          "' on instance of class '" + item.getClass().getName() + "'.", e
+        );
+      }
+
+      this.indexed_properties
+        .get(propName)
+        .computeIfAbsent(value, k -> new HashSet<>())
+        .add(id);
+    }
   }
 
   // GETTERS & SETTERS

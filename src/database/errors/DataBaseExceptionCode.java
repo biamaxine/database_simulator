@@ -8,6 +8,7 @@ public enum DataBaseExceptionCode {
   CONNECTION_FAILURE("08.001", "Connection Failure"),
 
   // Classe 22 - Exceções de dados
+  ERROR_IN_ASSIGNMENT("22.005", "Error In Assignment"),
   DIVISION_BY_ZERO("22.012", "Division By Zero"),
 
   // Classe 23 - Restrições de integridade

@@ -1,11 +1,10 @@
 package database;
 
+import database.errors.UnableDefineTableException;
+import database.errors.UniqueViolationException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import database.errors.UnableDefineDocumentException;
-import database.errors.UniqueViolationException;
 
 class Property {
   Class<?> type;
@@ -115,7 +114,7 @@ public interface DataBaseItem {
 
   private void validateGetter(Method method) {
     if (method.getParameterCount() != 0)
-      throw new UnableDefineDocumentException(
+      throw new UnableDefineTableException(
         "Invalid GETTER method '" + method.getName() +
         "'. GETTER methods should not receive parameters."
       );
@@ -123,7 +122,7 @@ public interface DataBaseItem {
 
   private void validateSetter(Method method) {
     if (method.getParameterCount() != 1)
-      throw new UnableDefineDocumentException(
+      throw new UnableDefineTableException(
         "Invalid SETTER method '" + method.getName() +
         "'. SETTER methods must only receive one parameter."
       );
@@ -135,7 +134,7 @@ public interface DataBaseItem {
     Method oppositeMethod
   ) {
     if (prop.type != null && prop.type != newType)
-      throw new UnableDefineDocumentException(
+      throw new UnableDefineTableException(
         "The type of property is already set to '" + prop.type + "' by the '" +
         (oppositeMethod != null ? oppositeMethod.getName() : "undefined") +
         "' method and cannot be redefined as '" + newType + "'."

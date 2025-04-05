@@ -19,9 +19,12 @@ public enum DataBaseExceptionCode {
   SYNTAX_ERROR("42.000", "Syntax Error"),
 
   // Class XX - Personalizados
+    // 000 - 099: Unable Define
+  UNABLE_DEFINE_TABLE("XX.000", "Unable Define Collection"),
   UNABLE_DEFINE_PROPERTY("XX.001", "Unable Define Property"),
-  UNABLE_DEFINE_DOCUMENT("XX.002", "Unable Define Document"),
-  UNABLE_DEFINE_COLLECTION("XX.003", "Unable Define Collection"),
+  // 100 - 199: CRUD Operations
+  UNABLE_CREATE_ITEM("XX.002", "Unable Define Document"),
+
   UNKNOWN_ERROR("XX.999", "Unknown Error");
 
   private final String code;

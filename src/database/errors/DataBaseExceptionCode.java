@@ -17,18 +17,40 @@ public enum DataBaseExceptionCode {
 
   // Classe 42 - Sintaxe SQL
   SYNTAX_ERROR("42.000", "Syntax Error"),
+  UNDEFINED_COLUMN("42.703", "Undefined Column"),
 
   // Class XX - Personalizados
-    // 000 - 099: Unable Define
-  UNABLE_DEFINE_TABLE("XX.000", "Unable Define Collection"),
-  UNABLE_DEFINE_PROPERTY("XX.001", "Unable Define Property"),
-  // 100 - 199: CRUD Operations
-  UNABLE_CREATE_ITEM("XX.002", "Unable Define Document"),
+    // DataBase Definitions
+    UNABLE_DEFINE_TABLE("DB.000", "Unable Define Table"),
+    UNABLE_DEFINE_PROPERTY("DB.001", "Unable Define Property"),
 
-  UNKNOWN_ERROR("XX.999", "Unknown Error");
+    // SYS Definitios
+    UNABLE_DEFINE_INSTANCE("SYS.001", "Unable Create Instance"),
+
+    // SYS Operations
+    REQUIRED_PARAMETER_MISSING("SYS.100", "Required Parameter Missing"),
+    CONTRACT_VIOLATION("SYS.101", "Contract Violation"),
+
+    // CRUD Operations
+      // 000
+    UNABLE_CREATE_ITEM("CRUD.000", "Unable Create Item"),
+    UNABLE_CREATE_MANY_ITEMS("CRUD.001", "Unable Create Many Items"),
+      // 010
+    UNABLE_READ_FULL_ITEMS("CRUD.010", "Unable Read Full Items"),
+    UNABLE_READ_UNIQUE_ITEM("CRUD.011", "Unable Read Unique Item"),
+    UNABLE_READ_INDEXED_ITEMS("CRUD.012", "Unable Read Indexed Items"),
+      // 020
+    UNABLE_UPDATE_ITEM("CRUD.020", "Unable Update Item"),
+    UNABLE_UPDATE_MANY_ITEMS("CRUD.021", "Unable Update Many Items"),
+      // 030
+    UNABLE_DELETE_ITEM("CRUD.030", "Unable Delete Item"),
+    UNABLE_DELETE_MANY_ITEMS("CRUD.031", "Unable Delete Many Items"),
+
+    // 999: Unknown
+    UNKNOWN_ERROR("XX.999", "Unknown Error");
 
   private final String code;
-  private final String name;
+  private final String label;
 
   private static final Map<String, DataBaseExceptionCode> LOOKUP_MAP = new HashMap<>();
 
@@ -38,17 +60,17 @@ public enum DataBaseExceptionCode {
     }
   }
 
-  private DataBaseExceptionCode(String code, String name) {
+  private DataBaseExceptionCode(String code, String label) {
     this.code = code;
-    this.name = name;
+    this.label = label;
   }
 
   public String getCode() {
     return code;
   }
 
-  public String getName() {
-    return name;
+  public String getLabel() {
+    return label;
   }
 
   public static DataBaseExceptionCode fromCode(String code) {
@@ -57,6 +79,6 @@ public enum DataBaseExceptionCode {
 
   @Override
   public String toString() {
-    return "ERROR " + code + " [" + name + "]";
+    return "ERROR " + code + " [" + label + "]";
   }
 }
